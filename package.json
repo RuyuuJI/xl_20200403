@@ -10,7 +10,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "react-app-rewired": ""
+    "react-app-rewired": "2.1.5",
+    "customize-cra": "0.9.1"
   },
   "scripts": {
     "build": "react-app-rewired build",
@@ -38,6 +39,9 @@
     "customize-cra": "^0.9.1",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
-    "react-app-rewired": "^2.1.5"
+    "node-sass": "^4.13.1",
+    "react-app-rewired": "^2.1.5",
+    "react-router-dom": "^5.1.2",
+    "sass-loader": "^8.0.2"
   }
 }

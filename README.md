@@ -11,3 +11,7 @@
 2.按需打包
 3.标签组件，方法组件
 4.修改antd主题颜色
+
+## react-router-dom路由
+1.路由是一种映射关系 一个key-value   key=path，
+    value=前端component组件/后端处理请求的回调函数
