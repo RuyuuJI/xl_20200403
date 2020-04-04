@@ -17,7 +17,8 @@ class Login extends Component {
     }
     handleSubmit=(e)=> {
         console.log(e);
-        console.log( this.props )
+        console.log( this.props );
+        
     }
     validatorPwd =(rule, value)=>{
         //长度小于12
@@ -50,7 +51,7 @@ class Login extends Component {
                         onFinish={this.handleSubmit}
                     >
                         <Item
-                            name="username"
+                            name="userno"
                             initialvalues = {''}
                             rules={[{ required: true ,whitespace :true, message: 'Please input your Username!' },
                         {max:12,message:"最长为12位"},
