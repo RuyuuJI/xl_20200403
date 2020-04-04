@@ -4,19 +4,18 @@
 */
 import ajax from './ajax'
 
-
 const baseUrl ="http://localhost:3000"
 
-export function reqLogin(username,password){
+export const reqLogin =(userno,password)=>(
     //请求登录
-    ajax({
+   ajax({
         method:'post',
         url: baseUrl+'/xl/php/login.php',
-        data:{
-            username,
-            password
+        // data:qs.stringify({userno,password})  //拦截器当中已经处理
+        data:{//默认json格式
+            "userno":userno,
+            "password":password
         }
     })
-}
-
-reqLogin(1,2)
+   //或者 ajax.post(baseUrl+'/xl/php/login.php',{userno.password})
+)

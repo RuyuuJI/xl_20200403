@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 //表单
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button ,message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 import "./login.scss";
 
 //图标
 import Aidsvg from "../../assets/svg/aid.svg";
+
+//接口请求函数
+import {reqLogin} from '../../api'
+
 
 const Item = Form.Item
 
@@ -15,9 +19,17 @@ class Login extends Component {
         super(props)
         this.handleSubmit =this.handleSubmit.bind(this)
     }
-    handleSubmit=(e)=> {
-        console.log(e);
-        console.log( this.props );
+    handleSubmit= async (e)=>  {
+      const result= await reqLogin(e.userno,e.password);
+      console.log(result)
+        if(result.state == 1){
+        //登陆成功
+            this.props.history.replace("/");
+            message.success("welcome : "+result.userName)
+        }else{
+        //登陆失败
+            message.error(result.msg)
+        }
         
     }
     validatorPwd =(rule, value)=>{
