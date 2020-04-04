@@ -11,11 +11,30 @@ import Aidsvg from "../../assets/svg/aid.svg";
 const Item = Form.Item
 
 class Login extends Component {
-
-    handleSubmit = e => {
-        e.preventDefault();
+    constructor(props){
+        super(props)
+        this.handleSubmit =this.handleSubmit.bind(this)
+    }
+    handleSubmit=(e)=> {
+        console.log(e);
+        console.log( this.props )
+    }
+    validatorPwd =(rule, value)=>{
+        //长度小于12
+        //字母下划线数字有效
+        value =value.trim();
+        if(!value){
+            return Promise.reject("不能敲空格哦")
+        }else if (value.length>12){
+            return Promise.reject("输入的字符太多了")
+        }else if(!(/^[a-zA-Z0-9_]+$/.test(value))){
+            return Promise.reject("你在乱敲些什么玩意儿呢")
+        }else{
+            return Promise.resolve("welcome")
+        }
     }
     render() {
+      
         return (
             <div className="login">
                 <div className="login-header">
@@ -32,13 +51,20 @@ class Login extends Component {
                     >
                         <Item
                             name="username"
-                            rules={[{ required: true, message: 'Please input your Username!' }]}
+                            initialvalues = {''}
+                            rules={[{ required: true ,whitespace :true, message: 'Please input your Username!' },
+                        {max:12,message:"最长为12位"},
+                        {pattern :/^[a-zA-Z0-9_]+$/ ,message:"字母下划线才有效哦"}  
+                    ]}
                         >
                             <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
                         </Item>
                         <Item
                             name="password"
-                            rules={[{ required: true, message: 'Please input your Password!' }]}
+                            rules={[
+                                { required: true, message: 'Please input your Password!' },
+                                {validator: this.validatorPwd}
+                        ]}
                         >
                             <Input
                                 prefix={<LockOutlined className="site-form-item-icon" />}
@@ -66,5 +92,6 @@ class Login extends Component {
         );
     }
 }
+// 包装Form组件，形成新组件
 
 export default Login;
