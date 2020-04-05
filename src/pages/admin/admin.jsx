@@ -11,6 +11,10 @@ import './admin.scss'
 
 //注册路由
 import Home from "../home/home.jsx"
+import About from "../about/about.jsx"
+import Assistance from "../assistance/assistance.jsx"
+import Elder from "../elder/elder.jsx"
+import User from "../user/user.jsx"
 
 const { Footer, Sider, Content } = Layout;
 
@@ -34,11 +38,11 @@ export default class Admin extends Component {
                     <Content>
                         <Switch >
                             <Route path="/home" component ={Home}/>
-                            <Route path="/home" component ={Home}/>
-                            <Route path="/home" component ={Home}/>
-                            <Route path="/home" component ={Home}/>
-
-
+                            <Route path="/user" component ={User}/>
+                            <Route path="/elder" component ={Elder}/>
+                            <Route path="/assistance" component ={Assistance}/>
+                            <Route path="/about" component ={About}/>
+                            <Redirect to='/home' />
                         </Switch >
                     </Content>
 
