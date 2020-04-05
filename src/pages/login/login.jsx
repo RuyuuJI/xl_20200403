@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom"  //重新定向
+
 //表单
 import { Form, Input, Button ,message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -11,6 +13,9 @@ import Aidsvg from "../../assets/svg/aid.svg";
 //接口请求函数
 import {reqLogin} from '../../api'
 
+//工具模块
+import storageUtils from "../../utils/storageUtils.js"
+
 
 const Item = Form.Item
 
@@ -20,10 +25,10 @@ class Login extends Component {
         this.handleSubmit =this.handleSubmit.bind(this)
     }
     handleSubmit= async (e)=>  {
-      const result= await reqLogin(e.userno,e.password);
-      console.log(result)
+      const result= await reqLogin(e.userno,e.password)  || {};
         if(result.state == 1){
         //登陆成功
+        storageUtils.saveUser(result) //保存为json格式的字符串
             this.props.history.replace("/");
             message.success("welcome : "+result.userName)
         }else{
@@ -47,7 +52,14 @@ class Login extends Component {
         }
     }
     render() {
-      
+        //如果登陆过跳转到admin
+        const user =storageUtils.getUser(); //如果有则读，没有则空
+        if(user.userName){
+            //不能直接使用this.props.history.replace('/login')
+            return <Redirect to="/" />
+        }
+
+
         return (
             <div className="login">
                 <div className="login-header">

@@ -31,3 +31,6 @@
     同步编码方式实现异步流程
     1。使用:在返回的promise左边使用await，得到promise的异步成功值
     2.在该函数前面加一个async
+
+## 自动登录localstorage，使用story封装local插件管理，内存中存储提高效率
+## 编写路由组件--》注册路由

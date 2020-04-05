@@ -44,7 +44,8 @@
     "node-sass": "^4.13.1",
     "react-app-rewired": "^2.1.5",
     "react-router-dom": "^5.1.2",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "store": "^2.0.12"
   },
-  "proxy":"http://xlweb.ltd:8011"
+  "proxy": "http://xlweb.ltd:8011"
 }
