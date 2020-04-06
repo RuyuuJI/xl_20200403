@@ -43,8 +43,8 @@ export default class Admin extends Component {
                             <Route path="/user" component ={User}/>
                             <Route path="/elder" component ={Elder}/>
                             <Route path="/assistance" component ={Assistance}/>
-                            <Route path="/about" component ={About}/>
                             <Route path="/community" component ={Community}/>
+                            <Route path='/about' component ={About}/>
 
                             <Redirect to='/home' />
                         </Switch >

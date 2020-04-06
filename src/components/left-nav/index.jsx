@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
 import "./index.scss"
-import { Link } from "react-router-dom"
+import { Link ,withRouter} from "react-router-dom"  //{定向，包装非路由组件}
 
 //--------------文档上的icon和menu
 import { Menu } from 'antd';
-import {
-    UsergroupAddOutlined,
-    HomeOutlined,
-    RedditOutlined,
-    DeploymentUnitOutlined,
-    DesktopOutlined,
-    MailOutlined,
-} from '@ant-design/icons';
 
-
+//引入菜单配置
+import { HomeOutlined} from '@ant-design/icons';
+import menuList from "../../config/menuConfig.js"
 //资源
 import aidImg from "../../assets/svg/aid.svg";
 const { SubMenu } = Menu;
@@ -22,7 +16,9 @@ const { SubMenu } = Menu;
 
 class index extends Component {
     state = {
-        collapsed: false,
+        collapsed: true,
+        openKeys : '',
+        currentPath:this.props.location.pathname
     };
 
     toggleCollapsed = () => {
@@ -30,7 +26,53 @@ class index extends Component {
             collapsed: !this.state.collapsed,
         });
     };
+    getmenuNode =(menuList) =>{
+        
+         //获取menu数据数组，生成标签数组
+        //根据是否有children属性生成<Menu > 或者<SubMenu>
+        const currentPath = this.state.currentPath;
+
+        return menuList.reduce((pre,item) =>{
+            //pre为返回数组
+            let Icon = item.icon;
+            if (!item.children) {
+                pre.push ( 
+                <Menu.Item key={item.key} >
+                    <Link to={item.key}>
+                       <Icon />
+                        <span>{item.title}</span>
+                    </Link>
+                </Menu.Item>
+              
+                )
+            }else{
+                //每个item是否匹配默认的openkey
+                if(item.children.find(cItem =>cItem==currentPath)){
+                    this.setState({
+                        openKeys:item.key
+                    })  
+                }
+                pre.push(
+                    <SubMenu key={item.key} title={
+                        <span>
+                             <Icon />
+                            <span>{item.title}</span>
+                        </span>
+                    }>
+                       {this.getmenuNode(item.children)}
+                    </SubMenu>
+                )
+            }
+            return pre
+        },[])
+    }
+    componentWillMount(){
+        //第一次执行render前，做同步的准备
+        this.menuNodes =this.getmenuNode(menuList);
+
+    }
     render() {
+        console.log(this.openKeys)
         return (
             <div className="left-nav">
                 <Link className="left-nav-link" to="/home">
@@ -38,95 +80,24 @@ class index extends Component {
                     <h1>后台管理</h1>
                 </Link>
                 <Menu
-                    defaultSelectedKeys={['/home']}
-                    defaultOpenKeys={['sub1']}
+                    // selectedKeys ={[this.state.currentPath]}
+                    defaultSelectedKeys={[this.state.currentPath]}
+                    defaultOpenKeys={[this.state.openKeys]}
                     mode="inline"
                     theme="dark"
-                    inlineCollapsed={this.state.collapsed}
                 >
                     <Menu.Item key="/home">
                         <Link to="/home">
                             <HomeOutlined />
                             <span>首页</span>
                         </Link>
-
                     </Menu.Item>
-                    <SubMenu
-                        key="user"
-                        title={
-                            <span>
-                                <DesktopOutlined />
-                                <span>管理员中心</span>
-                            </span>
-                        }
-                    >
-                        <Menu.Item key="5">
-                        <Link to="/user">
-                           个人信息
-                        </Link>
-                            </Menu.Item>
-                        
-                        <Menu.Item key="6">
-                        <Link to="/home">
-                           个人信息
-                        </Link>
-                        </Menu.Item>
-                        <Menu.Item key="7">Option 7</Menu.Item>
-                        <Menu.Item key="8">Option 8</Menu.Item>
-                    </SubMenu>
-
-                    <SubMenu
-                        key="/elder"
-                        title={
-                            <span>
-                                <RedditOutlined />
-                                <span>人员管理</span>
-                            </span>
-                        }
-                    >
-                        <Menu.Item key="5">Option 5</Menu.Item>
-                        <Menu.Item key="6">Option 6</Menu.Item>
-                        <Menu.Item key="7">Option 7</Menu.Item>
-                        <Menu.Item key="8">Option 8</Menu.Item>
-                    </SubMenu>
-
-                    <SubMenu
-                        key="/community"
-                        title={
-                            <span>
-                                <UsergroupAddOutlined />
-                                <span>社区管理</span>
-                            </span>
-                        }
-                    >
-                        <Menu.Item key="5">Option 5</Menu.Item>
-                        <Menu.Item key="6">Option 6</Menu.Item>
-                        <Menu.Item key="7">Option 7</Menu.Item>
-                        <Menu.Item key="8">Option 8</Menu.Item>
-                    </SubMenu>
-                    <SubMenu
-                        key="/assistance"
-                        title={
-                            <span>
-                                <MailOutlined />
-                                <span>互助管理</span>
-                            </span>
-                        }
-                    >
-                        <Menu.Item key="5">Option 5</Menu.Item>
-                        <Menu.Item key="6">Option 6</Menu.Item>
-                        <Menu.Item key="7">Option 7</Menu.Item>
-                        <Menu.Item key="8">Option 8</Menu.Item>
-                    </SubMenu>
-
-                    <Menu.Item key="/about">
-                        <DeploymentUnitOutlined />
-                        <span>关于系统</span>
-                    </Menu.Item>
+                    {this.menuNodes}
                 </Menu>
             </div>
         );
     }
 }
 
-export default index;
+//告诫组件，新组件向index传递history,location,match
+export default withRouter(index);

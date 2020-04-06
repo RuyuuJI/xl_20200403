@@ -9,7 +9,7 @@ class about extends Component {
     render() {
         return (
             <div className="about">
-                
+                关于系统
             </div>
         );
     }
