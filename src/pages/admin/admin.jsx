@@ -15,6 +15,8 @@ import About from "../about/about.jsx"
 import Assistance from "../assistance/assistance.jsx"
 import Elder from "../elder/elder.jsx"
 import User from "../user/user.jsx"
+import Community from "../community/community.jsx"
+
 
 const { Footer, Sider, Content } = Layout;
 
@@ -42,6 +44,8 @@ export default class Admin extends Component {
                             <Route path="/elder" component ={Elder}/>
                             <Route path="/assistance" component ={Assistance}/>
                             <Route path="/about" component ={About}/>
+                            <Route path="/community" component ={Community}/>
+
                             <Redirect to='/home' />
                         </Switch >
                     </Content>
