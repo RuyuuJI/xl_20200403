@@ -14,7 +14,7 @@ const { SubMenu } = Menu;
 //-------------------------------------
 
 
-class index extends Component {
+class leftNav extends Component {
     state = {
         collapsed: true,
         openKeys : '',
@@ -48,9 +48,7 @@ class index extends Component {
             }else{
                 //每个item是否匹配默认的openkey
                 if(item.children.find(cItem =>cItem==currentPath)){
-                    this.setState({
-                        openKeys:item.key
-                    })  
+                  this.state.openKeys =item.key;
                 }
                 pre.push(
                     <SubMenu key={item.key} title={
@@ -72,7 +70,6 @@ class index extends Component {
 
     }
     render() {
-        console.log(this.openKeys)
         return (
             <div className="left-nav">
                 <Link className="left-nav-link" to="/home">
@@ -100,4 +97,4 @@ class index extends Component {
 }
 
 //告诫组件，新组件向index传递history,location,match
-export default withRouter(index);
+export default withRouter(leftNav);
