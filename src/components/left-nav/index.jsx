@@ -83,12 +83,7 @@ class leftNav extends Component {
                     mode="inline"
                     theme="dark"
                 >
-                    <Menu.Item key="/home">
-                        <Link to="/home">
-                            <HomeOutlined />
-                            <span>首页</span>
-                        </Link>
-                    </Menu.Item>
+                  
                     {this.menuNodes}
                 </Menu>
             </div>

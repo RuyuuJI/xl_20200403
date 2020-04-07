@@ -6,11 +6,34 @@ import {Modal,Button } from "antd"
 import { ExclamationCircleOutlined } from  '@ant-design/icons';
 
 import {withRouter} from 'react-router-dom'//非路由组件变成路由组件的包装函数
-
+import menuList from "../../config/menuConfig.js"
+//工具函数
+import {formatDate} from "../../utils/lowUtils"
+import {reqWeather} from "../../api/index.js"
 //---------------------------------------------------
 const { confirm } = Modal;
 class Header extends Component {
-    state = { visible: false };
+    state = { 
+        visible: false,
+        nowTime:new Date(),
+        dayPictureUrl:"",
+        weather:""
+
+     };
+     componentDidMount(){
+         //启动定时器
+        this.intervalId= setInterval(() => {
+             this.setState({
+                 nowTime:new Date()
+             })
+         }, (1000));
+         //发送jsonp请求天气
+         this.getWeather();
+     }
+     componentWillMount(){
+         //清除定时器
+        clearInterval(this.intervalId);
+     }
     logout = ()=>{
         //退出登录
        confirm({
@@ -29,8 +52,33 @@ class Header extends Component {
             }
         })
     }
+    getTitle =()=>{
+        //获取当前页面标题
+        let title ="";
+        const path =this.props.location.pathname;
+        menuList.forEach(item=>{
+            if(item.key==path){
+                title =item.title;
+                return false;//终止遍历
+            }else if(item.children){
+                const cItem =item.children.find(cItem=>cItem.key ==path);
+                if(cItem){title =cItem.title}
+                return false;//终止遍历
+
+            }
+        })
+        return title;
+    }
+    getWeather= async ()=>{
+       const {dayPictureUrl,weather} = await reqWeather();
+      this.setState({
+        dayPictureUrl,
+          weather})
+    }
+    
     render() {
         const user = storageUtils.getUser();
+        const title =this.getTitle();
         return (
             <div className="header">
                 <div className="header-top">
@@ -39,12 +87,12 @@ class Header extends Component {
                 </div><hr />
                 <div className="header-bottom">
                     <div className="header-bottom-left">
-                        <h2>title</h2>
+                        <h2>&nbsp;{title}</h2>
                     </div>
                     <div className="header-bottom-right">
-                        <span>动态时间</span>
-                        <img src="" alt="" />
-                        <span>动态天气</span>
+                        <span>{formatDate(this.state.nowTime)}</span>
+                        <img src={this.state.dayPictureUrl} alt="" />
+                            <span>{this.state.weather}</span>
                     </div>
 
 

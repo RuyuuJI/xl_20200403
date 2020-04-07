@@ -10,7 +10,11 @@ import {
 } from '@ant-design/icons';
 
 const menuList = [
-  
+    {
+        title:"首页",
+        key:"/home",
+        icon:HomeOutlined
+    },
     {
         title: "管理员中心",
         key: "/user",
