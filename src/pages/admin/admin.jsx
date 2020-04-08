@@ -16,6 +16,9 @@ import Assistance from "../assistance/assistance.jsx"
 import Elder from "../elder/elder.jsx"
 import User from "../user/user.jsx"
 import Community from "../community/community.jsx"
+import AddCommunity from "../community/addCommuinty.jsx"
+import UpdateCommunity from "../community/updateCommunity.jsx"
+
 
 
 const { Footer, Sider, Content } = Layout;
@@ -43,7 +46,11 @@ export default class Admin extends Component {
                             <Route path="/user" component ={User}/>
                             <Route path="/elder" component ={Elder}/>
                             <Route path="/assistance" component ={Assistance}/>
+
                             <Route path="/community" component ={Community}/>
+                            <Route path="/addCommunity" component ={AddCommunity}/>
+                            <Route path="/updateCommunity" component ={UpdateCommunity}/>
+
                             <Route path='/about' component ={About}/>
 
                             <Redirect to='/home' />

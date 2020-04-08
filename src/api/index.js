@@ -20,14 +20,13 @@ export const reqLogin =(userno,password)=>(
     })
    //或者 ajax.post(baseUrl+'/xl/php/login.php',{userno.password})
 )
-
+//请求天气
 export const reqWeather=()=>{
-    let location ="chongqing";//获取定位
+    let location ='重庆';//获取定位
     return new Promise((resolve,reject)=>{
         
-        
         //执行器函数执行异步任务
-        const url=`http://api.map.baidu.com/telematics/v3/weather?location=foshan&output=json&ak=3p49MVra6urFRGOT9s8UBWr2`
+        const url=`http://api.map.baidu.com/telematics/v3/weather?location=`+location+`&output=json&ak=3p49MVra6urFRGOT9s8UBWr2`
         jsonp(url,{},(error,data)=>{
             if(!error && data.error==0){
                 // Date.result 
@@ -41,3 +40,21 @@ export const reqWeather=()=>{
     })
    
 }
+//--------------------------社区
+//获取社区分类
+export const reqCommunities =()=> ajax(baseUrl+"/xl/php/community/getCommunity.php") //发送get请求
+export const reqCommunity =(ID)=> ajax(baseUrl+"/xl/php/community/getCommunity.php",{
+ //发送get请求指定社区
+    params: {
+    ID
+  },
+})
+
+export const addCommunity =({ID,name,address})=> ajax.post(baseUrl+"/xl/php/community/addCommunity.php",{
+    //发送post添加社区请求
+    ID,name,address
+}) 
+export const updateCommunity =({ID,name,address})=>ajax.post(baseUrl+"/xl/php/community/updateCommunity.php",{
+    //发送post添加社区请求
+    ID,name,address
+}) 

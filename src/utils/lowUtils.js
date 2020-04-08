@@ -8,3 +8,25 @@ export function formatDate(now) {
     var second = now.getSeconds();
     return year + "-" + month + "-" + date + "|" + hour +":"+ minute+":" +second;
 }
+
+//防抖函数
+export function debounce(func, wait, immediate) {
+    let time;
+    let debounced = function() {
+        let context = this;
+        if(time) clearTimeout(time);
+
+        if(immediate) {
+            let callNow = !time
+            if(callNow) func.apply(context, arguments)
+            time = setTimeout(
+                ()=>{time = null} //见注解
+            , wait)
+        } else {
+            time = setTimeout(
+                ()=>{func.apply(context, arguments)}
+            , wait) 
+        }
+    }
+    return debounced
+}

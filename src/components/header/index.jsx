@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import "./index.scss"
 import storageUtils from "../../utils/storageUtils"
 
-import {Modal,Button } from "antd"
+import {Modal,Button } from "antd"  //退出登录的弹窗
 import { ExclamationCircleOutlined } from  '@ant-design/icons';
 
 import {withRouter} from 'react-router-dom'//非路由组件变成路由组件的包装函数
@@ -10,14 +10,16 @@ import menuList from "../../config/menuConfig.js"
 //工具函数
 import {formatDate} from "../../utils/lowUtils"
 import {reqWeather} from "../../api/index.js"
+//xl的组件
+import LinkButton from "../link-button/index"
 //---------------------------------------------------
 const { confirm } = Modal;
 class Header extends Component {
     state = { 
         visible: false,
         nowTime:new Date(),
-        dayPictureUrl:"",
-        weather:""
+        dayPictureUrl:"",  //天气图片
+        weather:"" //天气
 
      };
      componentDidMount(){
@@ -83,7 +85,9 @@ class Header extends Component {
             <div className="header">
                 <div className="header-top">
                     <span>欢迎: &nbsp;&nbsp;{user.userName}</span>
-                    <a href="javascript:" onClick={this.logout} >退出</a>
+                    <LinkButton onClick={this.logout}>
+                        退出
+                    </LinkButton>
                 </div><hr />
                 <div className="header-bottom">
                     <div className="header-bottom-left">

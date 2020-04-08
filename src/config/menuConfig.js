@@ -48,24 +48,24 @@ const menuList = [
         icon: UsergroupAddOutlined,
         children: [
             {
-                title: "社区管理111",
-                key: "/community1",
+                title: "社区信息",
+                key: "/community",
                 icon: UsergroupAddOutlined,
             },
             {
-                title: "社区管理22",
-                key: "/community2",
+                title: "添加社区",
+                key: "/addCommuinty",
                 icon: UsergroupAddOutlined,
             },
             {
-                title: "社区管理333",
-                key: "/community3",
+                title: "社区信息修改",
+                key: "/updateCommunity",
                 icon: UsergroupAddOutlined,
             },
         ]
     },
     {
-        title: "社区管理",
+        title: "互助管理",
         key: "assistance",
         icon: MailOutlined,
         children: [
@@ -91,7 +91,7 @@ const menuList = [
         key: "about",
         icon: DeploymentUnitOutlined,
        
-    }
+    },
 ]
 
 export default menuList;
