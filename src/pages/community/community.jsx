@@ -15,24 +15,25 @@ import {
 import LinkButton from "../../components/link-button/index"
 import AddUpdateForm from "./form.jsx"  //添加修改的便捷表单
 //--------------------数据请求
-import {addCommunity,updateCommunity,reqCommunity,reqCommunities} from "../../api"
-import {debounce} from "../../utils/lowUtils"  //防抖函数
+import { addCommunity, updateCommunity, reqCommunity, reqCommunities } from "../../api"
+import { debounce } from "../../utils/lowUtils"  //防抖函数
 
 class community extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-
+    this.form ={};
+    
   }
   state = {
+    row:{},  //选中行
     communities: [],
-    loading : false , //是否正在加载,
-    showStatus :0 , //0显示隐藏  1显示添加 2显示修改
-    formData:{} , //表单数据
-    formValid:false //表单是否正确
+    loading: false, //是否正在加载,
+    showStatus: 0, //0显示隐藏  1显示添加 2显示修改
+    formData: {}, //表单数据
   }
-  columns =[]  //；列表列配置
-  initColumns =()=>{
-     this.columns = [
+  columns = []  //；列表列配置
+  initColumns = () => {
+    this.columns = [
       {
         title: '编号',
         dataIndex: 'id',
@@ -61,82 +62,92 @@ class community extends Component {
       },
       {
         title: "查看详情",
-        render: text => <LinkButton>查看详情</LinkButton> //转为链接
-    
+      render: current => <LinkButton onClick={()=>{ this.setState({showStatus:2,row:current})}}>修改分类</LinkButton> //转为链接
+
       }
     ];
   }
-   getRows =async ()=>{
-    this.setState({loading :true})
-     const result =await reqCommunities();
-     if(result.state==1){
-       //正确收到数据
-        this.setState({
-          communities :result.data,
-          loading :false
-        })
-     }else{
-       this.setState({
-         loading:false
-       })
-      message("获取社区信息失败")
-     }
-
-   }
-   handleOk=async ()=>{  //点击确定
-    //发送请求
-    if(!this.state.formValid)return message.error("再确认一下？")//验证不通过
-
-    const result = await addCommunity();
-      if(result.statte ==1){
-      //验证通过
-        message.success("添加成功")
-      }else{
-        message.error("添加失败")
-      }
-    
-   }
-   handleCancel =()=>{  //点击取消
-    this.setState({
-      showStatus:0
-    })
-   }
-  setForm=(form)=>{   //根据表单返回值确认是否可以提交
-    console.log(form.current);
-    const res= form.current.validateFields();
-    res.then(()=>{  //验证正确
+  getRows = async () => {
+    this.setState({ loading: true })
+    const result = await reqCommunities();
+    if (result.state == 1) {
+      //正确收到数据
       this.setState({
-        formValid:true,
-        formData :form.current.getFieldsValue()
+        communities: result.data,
+        loading: false
+      })
+    } else {
+      this.setState({
+        loading: false
+      })
+      message("获取社区信息失败")
+    }
+
+  }
+  handleOk =  () => {  //点击确定
+    //开始验证
+    let res ;
+    if(this.state.showStatus==1){
+      //添加全部需要验证
+      res = this.form.current.validateFields();
+    }else{
+      //修改不需要验证ID
+      res = this.form.current.validateFields(["name","address"]);
+
+    }
+
+    let result ;
+    res.then(() => {  //验证正确
+      this.setState({
+        formData: this.form.current.getFieldsValue()
+      },async () => {
+        if(this.state.showStatus==1){
+          result= await addCommunity({ ...this.state.formData });
+        }else{
+          result = await updateCommunity({ ...this.state.formData })
+        }
+        //发送请求  修改
+
+        //发送请求  添加
+        if (result.state == 1) {
+          //验证通过
+          message.success(result.msg)
+        } else {
+          message.error(result.msg)
+        }
+        this.handleCancel();
       })
     });
-    res.catch(()=>{
-      this.setState({
-        formValid:false,
-      })
+    res.catch(() => {
+      return message.error("再确认一下？");//验证不通过
     })
-   
+
+
   }
-  componentWillMount(){
+  handleCancel = () => {  //点击取消
+    this.setState({
+      showStatus: 0
+    })
+  }
+  componentWillMount() {
     this.initColumns();
- 
+
   }
-  componentDidMount(){
+  componentDidMount() {
     this.getRows();
   }
   render() {
-    const {loading ,showStatus} =  this.state;
+    const { loading, showStatus,row } = this.state;
     const extra = (
-      <Button type="primary" onClick={()=>{this.setState({showStatus:1})}}>
+      <Button type="primary" onClick={() => { this.setState({ showStatus: 1 }) }}>
         + 添加社区
       </Button>
     );
-
     return (
       <Card className="community" extra={extra}>
         <Table
           columns={this.columns} dataSource={this.state.communities}
-          loading ={loading}
+          loading={loading}
           bordered={true}//有边框
           rowKey="id"
           scroll={{ x: true }}
@@ -145,9 +156,9 @@ class community extends Component {
             showQuickJumper: true
           }}
         />
-         <Modal
-          visible={showStatus!==0}
-          title="Title"
+        <Modal
+          visible={showStatus !== 0}
+          title={showStatus==1?"添加":"修改"}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={[
@@ -160,7 +171,8 @@ class community extends Component {
           ]}
         >
           {/* 将子组件的数据传出来 */}
-          <AddUpdateForm setForm={this.setForm}
+          <AddUpdateForm setForm={form=>this.form=form} 
+          row={showStatus==2?row:{}}
           />
         </Modal>
       </Card>
