@@ -26,8 +26,8 @@ const menuList = [
         icon: RedditOutlined,
         children: [
             {
-                title: "人员管理111",
-                key: "/elder1",
+                title: "人员信息统计",
+                key: "/elder",
                 icon: RedditOutlined,
             },
             {

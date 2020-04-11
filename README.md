@@ -47,3 +47,8 @@ withRouter包装成路由组件,给其传入下面三个属性
 
 ## 与后台的数据交互 form，table....
 子组件中的 onFieldsChange 莫名其妙会执行三次
+
+子组件暴露给父组件自己的表单
+1 this.props.setForm(ref)   //ref是子组件内部指定的表单
+2 setForm(form =>{this.form =form})  //拿到子组件的表单
+3 this.form 有个current对象包含表单的全部方法

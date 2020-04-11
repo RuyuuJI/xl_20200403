@@ -115,7 +115,7 @@ class community extends Component {
         } else {
           message.error(result.msg)
         }
-        this.handleCancel();
+        this.initColumns();
       })
     });
     res.catch(() => {

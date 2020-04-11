@@ -58,3 +58,18 @@ export const updateCommunity =({ID,name,address})=>ajax.post(baseUrl+"/xl/php/co
     //发送post添加社区请求
     ID,name,address
 }) 
+
+//---------------------------------------用户
+export const reqElder =(id)=> ajax(baseUrl +'/xl/php/elders/reqElders.php',{
+    params: {
+        id
+      },
+})
+export const addElder =({id,name,age,birth,sex,communityID,communityName,tel,address})=>(
+    ajax.post(baseUrl +'/xl/php/elders/addElder.php',{
+        id,name,age,birth,sex,communityID,communityName,tel,address
+    })
+)
+
+export const updateElder =()=> ajax(baseUrl +'/xl/php/elders/updateElders.php')
+
