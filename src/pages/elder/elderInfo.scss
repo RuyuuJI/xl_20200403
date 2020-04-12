@@ -1,0 +1,27 @@
+.list-item {
+    & .list-item-left {
+        font-size: 20px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    & img{
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+        background-image: url("../../assets/png/testUser.jpg");
+    }
+}
+.searchElder{
+    & .isElder{
+        position: relative;
+    }
+   &.searchElder-search{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+   }
+    & .isElder:checked .searchElder-search{
+        position: relative;
+        
+    }
+}

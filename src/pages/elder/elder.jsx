@@ -19,6 +19,7 @@ import LinkButton from "../../components/link-button/index"
 import { reqElder, addElder,updateElder } from "../../api"
 import { contains } from "../../utils/middleUtils"  //防抖函数
 import AddUpdateElder from "./form.jsx"
+import memoryUtils from "../../utils/memoryUtils.js"
 //------------------------------------
 const Option = Select.Option;
 //--------------------
@@ -131,8 +132,11 @@ class elder extends Component {
       },
       {
         title: 'name',
-        dataIndex: 'name',//字段
-        render: text => <a href="javascript:">{text}</a> //转为链接
+        // dataIndex: 'name',//字段
+        render: item => <LinkButton onClick ={()=>{
+          memoryUtils.elderMemory =item;
+          this.props.history.push(`/elderInfo/${item.id}`)}
+        }>{item.name}</LinkButton> //转为链接
       },
       {
         title: 'age',
@@ -190,8 +194,13 @@ class elder extends Component {
     const title = (
       <span className="cardTitle">
         <Select className="title-select"   onChange={(key)=>{this.setState({filter:{...filter,key:key}})}}>
+        <Option value="name">按id搜索</Option>
           <Option value="name">按名称搜索</Option>
+          <Option value="age">按年龄搜索</Option>
+          <Option value="tel">按电话搜索</Option>
           <Option value="communityName">按社区名称搜索</Option>
+          <Option value="address">按地址搜索</Option>
+
         </Select>
         <Input.Search className="title-input"  enterButton={true} onSearch={this.filterElder} />
       </span>

@@ -7,5 +7,6 @@
 import storageUtils from "./storageUtils";
 
 export default{
-    user: storageUtils.getUser()
+    user: storageUtils.getUser(),
+    elderMemory : {}  //需要查看的商品对象
 }

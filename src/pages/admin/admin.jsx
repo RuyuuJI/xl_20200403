@@ -8,12 +8,13 @@ import LeftNav from "../../components/left-nav";
 import Header from "../../components/header"
 //样式引入
 import './admin.scss'
-
 //注册路由
 import Home from "../home/home.jsx"
 import About from "../about/about.jsx"
 import Assistance from "../assistance/assistance.jsx"
 import Elder from "../elder/elder.jsx"
+import ElderInfo from "../elder/elderInfo.jsx"
+
 import User from "../user/user.jsx"
 import Community from "../community/community.jsx"
 import AddCommunity from "../community/addCommuinty.jsx"
@@ -45,6 +46,8 @@ export default class Admin extends Component {
                             <Route path="/home" component ={Home}/>
                             <Route path="/user" component ={User}/>
                             <Route path="/elder" component ={Elder}/>
+                            <Route path="/elderInfo/:id" component ={ElderInfo}/>
+
                             <Route path="/assistance" component ={Assistance}/>
 
                             <Route path="/community" component ={Community}/>
@@ -57,7 +60,7 @@ export default class Admin extends Component {
                         </Switch >
                     </Content>
 
-                    <Footer style={{ textAlign: "center", backgroundColor: 'rgba(0,0,0, 0.5)' }} >
+                    <Footer style={{textAlign: "center", backgroundColor: 'rgba(0,0,0, 0.5)' }} >
                         <p>made by xl，for graduation</p>
                         <p>推荐使用chrome浏览器</p>
                     </Footer>
