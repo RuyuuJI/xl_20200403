@@ -36,6 +36,8 @@ header('Access-Control-Allow-Methods:POST,GET');
           "communityName"=> $row["communityName"] ,
           "age"=> $row["age"] ,
           "birth"=> $row["birth"] ,
+          "sex"=> $row["sex"] ,
+
           "tel"=> $row["tel"] ,
           "address"=>  ''.$row["address"]
         ));
@@ -71,6 +73,7 @@ header('Access-Control-Allow-Methods:POST,GET');
        "communityName"=> $row["communityName"] ,
        "age"=> $row["age"] ,
        "birth"=> $row["birth"] ,
+       "sex"=> $row["sex"] ,
        "tel"=> $row["tel"] ,
        "address"=>  ''.$row["address"]
       ));

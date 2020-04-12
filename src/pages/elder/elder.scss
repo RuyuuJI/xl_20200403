@@ -1,3 +1,11 @@
 .elder{
-  
+  & .cardTitle{
+      & .title-select{
+          width: 130px;
+      }
+      & .title-input{
+          margin:0 10px;
+          width: 130px;
+      }
+  }
 }

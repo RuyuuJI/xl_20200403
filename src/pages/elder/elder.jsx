@@ -10,15 +10,18 @@ import {
   message,
   Card,
   Button,
-  Icon,
+  Input,
+  Select,
   Table
 } from "antd"
 import LinkButton from "../../components/link-button/index"
 //--------------------数据请求
 import { reqElder, addElder,updateElder } from "../../api"
-import { debounce } from "../../utils/lowUtils"  //防抖函数
+import { contains } from "../../utils/middleUtils"  //防抖函数
 import AddUpdateElder from "./form.jsx"
-
+//------------------------------------
+const Option = Select.Option;
+//--------------------
 class elder extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +30,9 @@ class elder extends Component {
   }
   state = {
     row: {},  //选中行
-    elders: [],
+    elders: [], //所有用户信息
+    filter : {key :"name" ,value :""},  // 筛选字段key  筛选值value
+    filterElders :[] ,//过滤后的用户信息
     loading: false, //是否正在加载,
     showStatus: 0, //0显示隐藏  1显示添加 2显示修改
     formData: {}, //表单数据
@@ -80,15 +85,32 @@ class elder extends Component {
       showStatus: 0
     })
   }
+  filterElder =(value) =>{ //筛选条件
+    const {filter ,elders}  =this.state;
 
-  getRows = async () => {
+   this.setState({filter:{...filter,value:value}},()=>{//修改过滤字段
+    const {filter ,elders}  =this.state;
+    let result = [];
+    elders.map((item,index)=>{  //查询符合条件的项
+      var res = contains(item[filter.key],filter.value);
+      if(res>=0){
+        result.push(item);
+      }
+    })
+    this.setState({  //返回结果
+      filterElders : result
+    })  
+   })
+  }
+  getRows = async () => {  //请求所有用户信息
     this.setState({ loading: true })
     const result = await reqElder();
     if (result.state == 1) {
       //正确收到数据
       this.setState({
         elders: result.data,
-        loading: false
+        loading: false,
+        filterElders : result.data
       })
     } else {
       this.setState({
@@ -121,7 +143,7 @@ class elder extends Component {
         },
       },
       {
-        title: '性别',
+        title: 'sex',
         dataIndex: 'sex',
         sorter: {
           compare: (a, b) => a.sex - b.sex,
@@ -158,17 +180,27 @@ class elder extends Component {
     this.getRows();
   }
   render() {
+    const { loading, showStatus, row, filterElders ,filter} = this.state;
+
     const extra = (
       <Button type="primary" onClick={() => { this.setState({ showStatus: 1 }) }}>
         + 添加用户
       </Button>
+    );
+    const title = (
+      <span className="cardTitle">
+        <Select className="title-select"   onChange={(key)=>{this.setState({filter:{...filter,key:key}})}}>
+          <Option value="name">按名称搜索</Option>
+          <Option value="communityName">按社区名称搜索</Option>
+        </Select>
+        <Input.Search className="title-input"  enterButton={true} onSearch={this.filterElder} />
+      </span>
     )
-    const { loading, showStatus, row, elders } = this.state;
 
     return (
-      <Card className="elder" extra={extra}>
+      <Card className="elder"  title ={title} extra={extra}>
         <Table
-          columns={this.columns} dataSource={elders}
+          columns={this.columns} dataSource={filterElders}
           loading={loading}
           bordered={true}//有边框
           rowKey="id"
