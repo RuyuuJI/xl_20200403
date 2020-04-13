@@ -8,5 +8,6 @@ import storageUtils from "./storageUtils";
 
 export default{
     user: storageUtils.getUser(),
-    elderMemory : {}  //需要查看的商品对象
+    elderMemory : {} , //需要查看的用户对象
+    communityMemory :{}  //需要查看的社区对象
 }

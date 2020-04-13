@@ -23,25 +23,27 @@ const Item = List.Item
 class elderInfo extends Component {
     isElder=React.createRef();
     state ={
-        
+        elder: memoryUtils.elderMemory  //当前是否选择过用户
     }
     searchElder=async (value)=>{
         //发送查找请求
         let res =await reqElder(value);
         if(res.state ==1 ){
-            memoryUtils.elderMemory = res.data;
+            memoryUtils.elderMemory = res.data[0];
             message.success("見つけた！");
             // console.log(this.isElder)
             this.setState({
+                elder :memoryUtils.elderMemory
             });
         }else{
-            message.warn("无人知晓")
+            message.warn("无人知晓");
+            this.setState({
+                elder :false
+            });
         }
     }
     render() {
        const elder= memoryUtils.elderMemory ;
-       console.log(elder)
-
        const extra = (   //搜索框
         <span className="searchElder" >
          <Checkbox style={{display:"none"}} ref={this.isElder}/>
@@ -51,7 +53,7 @@ class elderInfo extends Component {
         </Input.Search>
         </span>
        )
-       if(!elder[0]){  //如果当前没有选择用户
+       if(!elder.id){  //如果当前没有选择用户
         return extra
        }
         const title = (
@@ -67,7 +69,7 @@ class elderInfo extends Component {
                    <List>
                        <Item className="list-item">
                            <span className="list-item-left">用户ID</span>
-                           <span></span>
+                            <span>{elder.id}</span>
                        </Item>
                        <Item className="list-item">
                            <span>
@@ -76,31 +78,33 @@ class elderInfo extends Component {
                        </Item>
                        <Item className="list-item">
                            <span className="list-item-left">姓名</span>
-                           <span></span>
+                           <span>{elder.name}</span>
                        </Item>
                        <Item className="list-item">
                            <span className="list-item-left">性别</span>
-                           <span></span>
+                           <span>{elder.sexd}</span>
                        </Item>
                        <Item className="list-item">
                            <span className="list-item-left">年龄</span>
-                           <span></span>
+                           <span>{elder.age}</span>
                        </Item>
                        <Item className="list-item">
                            <span className="list-item-left">社区</span>
-                           <span></span>
+                           <span>{elder.communityName}</span>
                        </Item>
                        <Item className="list-item">
                            <span className="list-item-left">联系方式</span>
-                           <span></span>
+                           <span>{elder.tel}</span>
                        </Item>
                        <Item className="list-item">
                            <span className="list-item-left">地址</span>
-                           <span></span>
+                           <span>{elder.address}</span>
                        </Item>
                        <Item className="list-item">
                            <span className="list-item-left">个人描述</span>
-                           <span></span>
+                           <span>
+                               
+                           </span>
                        </Item>
                    </List>
             </Card>

@@ -17,7 +17,10 @@ import AddUpdateForm from "./form.jsx"  //添加修改的便捷表单
 //--------------------数据请求
 import { addCommunity, updateCommunity, reqCommunity, reqCommunities } from "../../api"
 import { debounce } from "../../utils/lowUtils"  //防抖函数
+//------------------------------工具类
+import memoryUtils from "../../utils/memoryUtils.js"
 
+//----------------------------
 class community extends Component {
   constructor(props) {
     super(props);
@@ -44,8 +47,10 @@ class community extends Component {
       },
       {
         title: 'Name',
-        dataIndex: 'name',//字段
-        render: text => <a href="javascript:">{text}</a> //转为链接
+        render:  item => <LinkButton onClick ={()=>{
+          memoryUtils.communityMemory =item;
+          this.props.history.push(`/communityInfo/${item.id}`)}
+        }>{item.name}</LinkButton> //转为链接
       },
       {
         title: '创建日期',
@@ -61,7 +66,7 @@ class community extends Component {
         dataIndex: 'address',
       },
       {
-        title: "查看详情",
+        title: "修改分类",
       render: current => <LinkButton onClick={()=>{ this.setState({showStatus:2,row:current})}}>修改分类</LinkButton> //转为链接
 
       }

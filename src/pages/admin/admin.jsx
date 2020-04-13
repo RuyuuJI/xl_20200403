@@ -17,8 +17,7 @@ import ElderInfo from "../elder/elderInfo.jsx"
 
 import User from "../user/user.jsx"
 import Community from "../community/community.jsx"
-import AddCommunity from "../community/addCommuinty.jsx"
-import UpdateCommunity from "../community/updateCommunity.jsx"
+import CommunityInfo from "../community/communityInfo.jsx"
 
 
 
@@ -51,8 +50,9 @@ export default class Admin extends Component {
                             <Route path="/assistance" component ={Assistance}/>
 
                             <Route path="/community" component ={Community}/>
-                            <Route path="/addCommunity" component ={AddCommunity}/>
-                            <Route path="/updateCommunity" component ={UpdateCommunity}/>
+                            <Route path="/communityInfo/:id" component ={CommunityInfo}/>
+
+                 
 
                             <Route path='/about' component ={About}/>
 

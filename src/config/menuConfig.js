@@ -53,8 +53,8 @@ const menuList = [
                 icon: UsergroupAddOutlined,
             },
             {
-                title: "添加社区",
-                key: "/addCommuinty",
+                title: "社区详情",
+                key: "/communityInfo/:id",
                 icon: UsergroupAddOutlined,
             },
             {

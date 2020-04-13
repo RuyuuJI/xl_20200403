@@ -70,6 +70,11 @@ export const addElder =({id,name,age,birth,sex,communityID,communityName,tel,add
         id,name,age,birth,sex,communityID,communityName,tel,address
     })
 )
-
-export const updateElder =()=> ajax(baseUrl +'/xl/php/elders/updateElders.php')
-
+//data = {id,name,age,sex,communityID,communityName,tel,address}
+export const updateElder =(data)=> {
+  console.log(data)
+  return  ajax.post(baseUrl+"/xl/php/elders/updateElder.php",{
+        //发送post添加社区请求
+        ...data
+    })
+}

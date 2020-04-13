@@ -6,8 +6,10 @@ import {
     Select,
   } from "antd"
 import {debounce} from "../../utils/lowUtils"  //防抖函数
-import {reqElder} from "../../api"
   import PropTypes from "prop-types"
+import community from '../community/community'
+//------------------------------api
+import { reqElder, reqCommunities } from "../../api"
 
 //----------------------
 const { Option } = Select;
@@ -21,12 +23,10 @@ const { Option } = Select;
      }
     formRef = React.createRef();
      state ={
-            id:"",
-            name: "",
-            address:""
+            row :this.props.row,
+            communities :[]
      }
      onFinish = values => {
-        console.log(values);
       };
      //添加或者修改的小模块
      IDcheck=async(rule,value)=>{ //检查id
@@ -39,23 +39,38 @@ const { Option } = Select;
          
      }
      initValue=()=>{  //刷新表单的默认值
-        const {id,name,address} = this.props.row;
+     
         this.formRef.current.setFieldsValue({
-            ID:id,
-            name:name,
-            address:address
+            ...this.props.row
+        })
+     }
+     initOptions =async ()=>{  //刷新社区选项
+        var res =await reqCommunities(); 
+        var options = [];
+        res.data.map((item,index)=>{
+            options.push(
+            <Option key={index+"-"+item.id} value={item.id}>{item.name}</Option>
+            )
+        });
+        this.setState({
+            communities :options
         })
      }
      componentWillMount=()=>{
         this.props.setForm(this.formRef);
+        this.initOptions()  //初始话社区选项
+     
+
      }
      componentDidUpdate=()=>{
         this.initValue();  //刷新值
      }
      
     render() {
-        
-        return (
+      const {communities} = this.state;
+
+      return (
+
            <Form  
            ref={this.formRef}
            onFieldsChange={(changedFields, allFields) => {
@@ -83,21 +98,24 @@ const { Option } = Select;
                >
                     <Input placeholder='用户名称' />
                </Form.Item>
-               
-               <Form.Item label="性别" name="sex" 
+
+               <Form.Item label="年龄" name="age"
+                 rules={[{max: 3, message: '岁数也太大了!'}]}
                >
+               <Input placeholder='用户年龄' />
+               </Form.Item>
+
+               <Form.Item label="性别" name="sex" >
                     <Select >
                     <Option value="男">🕺男</Option>
                     <Option value="dollar">💃女</Option>
                     </Select>
                </Form.Item>
 
-               <Form.Item label="社区" name="community" 
-               >
-                    <Select >
-                    <Option value="男">🕺男</Option>
-                    <Option value="dollar">💃女</Option>
-                    </Select>
+               <Form.Item label="社区"  name="communityID"  >
+               <Select >
+                        {communities}
+                </Select>
                </Form.Item>
 
                <Form.Item label="联系方式" name="tel" 
@@ -114,7 +132,7 @@ const { Option } = Select;
                     <Input placeholder='用户地址' />
                </Form.Item>
            </Form>
-        )
+      )
     }
 }
 
